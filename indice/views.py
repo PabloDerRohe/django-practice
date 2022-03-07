@@ -1,6 +1,7 @@
 
 from django.http import HttpResponse
 import random
+from django.shortcuts import render
 
 from django.template import loader
 
@@ -32,16 +33,6 @@ def calcular_nacimiento(request, edad):
 # Vista mi_plantilla
 
 def mi_plantilla(request):
-    #### Version vieja con open
-    # plantilla = open('/home/pablo/projects_vm/coderpython_vm/miproyecto/miproyecto/plantillas/mi_plantilla.html',)
-    # template = Template(plantilla.read())
-    # plantilla.close()
-    # context = Context(diccionario_de_datos)
-    # plantilla_preparada = template.render(diccionario_de_datos)
-    
-    #### Version nueva con loader
-    # template = loader.get_template('mi_plantilla.html')
-    # plantilla_preparada = template.render(diccionario_de_datos)
     
     nombre = 'Raul'
     apellido = 'Atahualpa'
@@ -55,12 +46,22 @@ def mi_plantilla(request):
         'lista': lista
     }    
     
-    # Loader
-    template = loader.get_template('mi_plantilla.html')
-    # Render
-    plantilla_preparada = template.render(diccionario_de_datos)
-    # Response
-    return HttpResponse(plantilla_preparada)
+    #### Version vieja con open
+    # plantilla = open('/home/pablo/projects_vm/coderpython_vm/miproyecto/miproyecto/plantillas/mi_plantilla.html',)
+    # template = Template(plantilla.read())
+    # plantilla.close()
+    # context = Context(diccionario_de_datos)
+    # plantilla_preparada = template.render(diccionario_de_datos)
     
+    #### Version nueva con loader
+    # Loader
+    # template = loader.get_template('mi_plantilla.html')
+    # # Render
+    # plantilla_preparada = template.render(diccionario_de_datos)
+    # # Response
+    # return HttpResponse(plantilla_preparada)
+    
+    #### Version con render
+    return render(request, 'mi_plantilla.html', diccionario_de_datos)
     
     
