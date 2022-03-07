@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    {% comment %} Comentario en django html {% endcomment %}
+
+    {% comment %} Titulo {% endcomment %}
+    <h1>Mi plantilla la mas vacia</h1>
+    {% comment %} Creamos un if en djangohtml {% endcomment %}
+    {% if  nombre_largo < 5 %}
+        {% comment %} Etiqueta p separa en parrafos {% endcomment %}
+        <p style="color: red;">{{nombre}}</p>
+        <p style="color: blue;">{{apellido}}</p>
+    {% elif nombre_largo == 5 %}
+    <p style="color: green;">{{nombre}}</p>
+    <p style="color: green;">{{apellido}}</p>
+    {% else %}
+        <p style="color: blue;">{{nombre}}</p>
+        <p style="color: red;">{{apellido}}</p>
+    {% endif %}
+
+    {% comment %} Tambien podemos usar el for de python {% endcomment %}
+    {% for valor in lista %}
+        <p style="color: red;">{{valor}}</p>
+    {% endfor %}
+
+    
+
+</body>
+</html>
