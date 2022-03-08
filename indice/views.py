@@ -9,7 +9,7 @@ from django.template import loader
 
 def inicio(request):
     
-    return HttpResponse('Hola, soy la nueva pagina')
+    return render(request, "indice/index.html", {})
 
 def otra_vista(request):
     return HttpResponse('''
