@@ -62,6 +62,6 @@ def mi_plantilla(request):
     # return HttpResponse(plantilla_preparada)
     
     #### Version con render
-    return render(request, 'mi_plantilla.html', diccionario_de_datos)
+    return render(request, 'indice/mi_plantilla.html', diccionario_de_datos)
     
     
