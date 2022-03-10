@@ -10,3 +10,4 @@ def nuevo_curso(request):
     nuevo_curso = Curso(nombre='Curso Python', camada=camada)
     nuevo_curso.save()
     return HttpResponse(f'Se creo el curso {nuevo_curso.nombre}, camada {nuevo_curso.camada}')
+
