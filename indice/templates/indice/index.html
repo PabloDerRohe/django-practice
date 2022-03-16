@@ -27,10 +27,13 @@
                 <a class="navbar-brand" href={% url 'inicio' %}>Inicio</a>
                 <a class="navbar-brand" href={% url 'mi_plantilla' %}>Mi plantilla</a>
                 <a class="navbar-brand" href={% url 'otra_vista' %}>Otra vista</a>
+                <a class="navbar-brand" href={% url 'formulario_curso' %}>Formulario</a>
+                <a class="navbar-brand" href={% url 'busqueda_curso' %}>Buscar curso</a>
                 {% comment %} <a class="btn btn-primary" href="#signup">Sign Up</a> {% endcomment %}
             </div>
         </nav>
         <!-- Masthead-->
+        {% block header_index %}
         <header class="masthead">
             <div class="container position-relative">
                 <div class="row justify-content-center">
@@ -78,6 +81,7 @@
                 </div>
             </div>
         </header>
+        {% endblock header_index %}
         
         {% block pruebaTemplate %}
             <p>Estamos todos jugados!</p>
