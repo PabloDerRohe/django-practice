@@ -1,10 +1,13 @@
+import email
 from django.http import HttpResponse
-from django.shortcuts import render
-from clase.models import Curso
-from clase.forms import CursoFormulario, BusquedaCurso
+from django.shortcuts import redirect, render
+from clase.models import Curso, Estudiante, Profesor
+from clase.forms import CursoFormulario, BusquedaCurso, EstudianteFormulario
 import random
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-# Create your views here.
 
 def nuevo_curso(request):
     camada = random.randrange(1500, 3000)
@@ -50,3 +53,97 @@ def busqueda_curso(request):
         request, "clase/busqueda_curso.html",
         {'buscador': buscador, 'cursos_buscados': cursos_buscados, 'dato': dato}
     )
+    
+
+# CRUD Basico
+
+def listado_estudiantes(request):
+    
+    listado_estudiantes = Estudiante.objects.all()
+    
+    return render(
+        request, "clase/listado_estudiantes.html",
+        {'listado_estudiantes': listado_estudiantes}
+    )
+    
+def crear_estudiante(request):
+    if request.method == 'POST':
+        formulario = EstudianteFormulario(request.POST)
+
+        if formulario.is_valid():
+            data = formulario.cleaned_data
+            nuevo_estudiante = Estudiante(
+                nombre=data['nombre'],
+                apellido=data['apellido'],
+                email=data['email']
+                )
+            nuevo_estudiante.save()
+            # return render(
+            # request, 'clase/listado_estudiantes.html',
+            # {})
+            return redirect('listado_estudiantes')
+            
+    formulario = EstudianteFormulario()
+    return render(
+        request, 'clase/crear_estudiante.html',
+        {'formulario': formulario})
+    
+def actualizar_estudiante(request, id):
+    
+    estudiante = Estudiante.objects.get(id=id)    
+    
+    if request.method == 'POST':
+        formulario = EstudianteFormulario(request.POST)
+
+        if formulario.is_valid():
+            data = formulario.cleaned_data #Limpia informacion
+            estudiante.nombre = data['nombre']
+            estudiante.apellido = data['apellido']
+            estudiante.email = data['email']
+            estudiante.save()
+            return redirect('listado_estudiantes')
+            
+    formulario = EstudianteFormulario(
+        initial={
+            'nombre': estudiante.nombre,
+            'apellido': estudiante.apellido,
+            'email': estudiante.email,
+        }
+    )
+    return render(
+        request, 'clase/actualizar_estudiante.html',
+        {'formulario': formulario, 'estudiante': estudiante})
+    
+def borrar_estudiante(request, id):
+    
+    estudiante = Estudiante.objects.get(id=id)    
+    estudiante.delete()
+    
+    return redirect('listado_estudiantes')
+
+
+# CRUD Clases basadas en vistas
+
+class ProfesorLista(ListView):
+    model = Profesor
+    template = '/clase/profesor_list.html'
+
+
+class ProfesorDetalle(DetailView):
+    model = Profesor
+    template = '/clase/profesor_detail.html'
+    
+    
+class ProfesorEditar(UpdateView):
+    model = Profesor
+    success_url = 'profesor_list'
+    template = '/clase/profesor_edit.html'
+    fields = ['nombre', 'apellido', 'email', 'profesion']
+    
+class ProfesorBorrar(DeleteView):
+    model = Profesor
+    success_url = 'profesor_list'
+    template = '/clase/profesor_delete.html'
+    
+    
+    

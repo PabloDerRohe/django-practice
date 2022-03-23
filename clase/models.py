@@ -1,6 +1,7 @@
 from django.db import models
 
-# Create your models here.
+# Dejar dos espacios entre cada clase para mantener orden del codigo
+# Comentarios no pasa nada
 
 class Estudiante(models.Model):
     
@@ -11,8 +12,6 @@ class Estudiante(models.Model):
     def __str__(self):
         return f'{self.nombre} {self.apellido}'
     
-# Dejar dos espacios entre cada clase para mantener orden del codigo
-# Comentarios no pasa nada
 
 class Profesor(models.Model):
     
@@ -20,6 +19,9 @@ class Profesor(models.Model):
     apellido = models.CharField(max_length=30)
     profesion = models.CharField(max_length=30)
     email = models.EmailField()
+    
+    def __str__(self):
+        return f'{self.nombre} {self.apellido}'
 
 
 class Entregable(models.Model):

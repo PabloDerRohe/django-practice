@@ -1,9 +1,13 @@
 
-from django.http import HttpResponse
 import random
-from django.shortcuts import render
 
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
 from django.template import loader
+
+
+from django.contrib.auth import login as django_login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 
 # Vistas de prueba
 
@@ -63,5 +67,42 @@ def mi_plantilla(request):
     
     #### Version con render
     return render(request, 'indice/mi_plantilla.html', diccionario_de_datos)
+
+
+def login(request):
+    
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            user = authenticate(username=username, password=password)
+            
+            if user is not None:
+                django_login(request, user)
+                
+                return render(request, 'indice/index.html', {})
+            else:
+                return render(request,
+                              'indice/login.html', {
+                              'form': form,
+                              'msj': 'No se auntentico'})
+        else:
+            form = AuthenticationForm()
+            return render(request, 
+                          'indice/login.html', 
+                          {'form': form, 
+                           'msj': 'Datos con formato incorrecto'
+                           }
+                          )
+            
+    # django_login, authenticate
+    
+    form = AuthenticationForm()
+    return render(request, 'indice/login.html', {'form': form, 'msj': ''})
+    
+    
     
     
