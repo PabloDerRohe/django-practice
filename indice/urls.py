@@ -12,4 +12,5 @@ urlpatterns = [
     path('calcular-nacimiento/<int:edad>', calcular_nacimiento, name='calcular_nacimiento'),
     path('mi-plantilla/', mi_plantilla, name='mi_plantilla'),
     path('login/', login, name='login'),
+    path('editar/', editar, name='editar'),
 ]

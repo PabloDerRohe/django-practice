@@ -1,0 +1,19 @@
+{% extends 'indice/index.html' %}
+
+{% block header_index %}
+
+    <h2>Editar user</h2>
+
+    {% if msj %}
+        {{msj}}
+    {% endif %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.as_table}}
+        <button>Guardar</button>
+    </form>
+{% endblock header_index %}
+
+{% block pruebaTemplate %}
+{% endblock pruebaTemplate %}

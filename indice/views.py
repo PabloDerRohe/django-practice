@@ -102,7 +102,13 @@ def login(request):
     
     form = AuthenticationForm()
     return render(request, 'indice/login.html', {'form': form, 'msj': ''})
+
+
+
+
+def editar(request):
+
+    # return render(request, 'indice/index.html', {'msj': ''})
     
-    
-    
+    return render(request, 'indice/editar_user.html', {'msj': ''})
     
