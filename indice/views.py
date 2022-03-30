@@ -7,7 +7,11 @@ from django.template import loader
 
 
 from django.contrib.auth import login as django_login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.decorators import login_required
+
+
+from indice.forms import NuestraCreacionUser, NuestraEdicionUser
 
 # Vistas de prueba
 
@@ -83,7 +87,7 @@ def login(request):
             if user is not None:
                 django_login(request, user)
                 
-                return render(request, 'indice/index.html', {})
+                return render(request, 'indice/index.html', {'msj': 'Te logeaste!'})
             else:
                 return render(request,
                               'indice/login.html', {
@@ -104,11 +108,60 @@ def login(request):
     return render(request, 'indice/login.html', {'form': form, 'msj': ''})
 
 
+def registrar(request):
+    
+    if request.method == 'POST':
+        form = NuestraCreacionUser(request.POST)
+    
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            form.save()
+            return render(request, 'indice/index.html', {'msj': f'Se creo el user {username}'})
+        else:
+            return render(request, 'indice/registrar.html', {'form': form, 'msj': 'Datos incorrectos'})
+            
+        
+    form = NuestraCreacionUser()
+    
+    return render(request, 'indice/registrar.html', {'form': form, 'msj': ''})
 
-
+@login_required
 def editar(request):
+    
+    request.user
 
+    if request.method == 'POST':
+        form = NuestraEdicionUser(request.POST)
+    
+        if form.is_valid():
+
+            data = form.cleaned_data
+
+            request.user.username = data.get('username')
+            request.user.email = data.get('email')
+            request.user.first_name = data.get('first_name', '')
+            request.user.last_name = data.get('last_name')
+            if data.get('password1') == data.get('password2') and len(data.get('password1')) > 8:
+                request.user.set_password(data.get('password1'))
+            else:
+                msj = 'No se modifico el password.'
+            
+            request.user.save()
+
+            return render(request, 'indice/index.html', {'msj': f'Se edito el user {request.user.username}'})
+        else:
+            return render(request, 'indice/editar_user.html', {'form': form, 'msj': 'Datos incorrectos'})
+            
+        
+    form = NuestraEdicionUser(
+        initial={
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+            'email': request.user.email,
+            'username': request.user.username,
+        }
+    )
     # return render(request, 'indice/index.html', {'msj': ''})
     
-    return render(request, 'indice/editar_user.html', {'msj': ''})
+    return render(request, 'indice/editar_user.html', {'form': form, 'msj': ''})
     

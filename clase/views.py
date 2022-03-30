@@ -4,9 +4,13 @@ from django.shortcuts import redirect, render
 from clase.models import Curso, Estudiante, Profesor
 from clase.forms import CursoFormulario, BusquedaCurso, EstudianteFormulario
 import random
+
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def nuevo_curso(request):
@@ -65,7 +69,8 @@ def listado_estudiantes(request):
         request, "clase/listado_estudiantes.html",
         {'listado_estudiantes': listado_estudiantes}
     )
-    
+
+@login_required
 def crear_estudiante(request):
     if request.method == 'POST':
         formulario = EstudianteFormulario(request.POST)
@@ -124,7 +129,7 @@ def borrar_estudiante(request, id):
 
 # CRUD Clases basadas en vistas
 
-class ProfesorLista(ListView):
+class ProfesorLista(LoginRequiredMixin, ListView):
     model = Profesor
     template = '/clase/profesor_list.html'
 

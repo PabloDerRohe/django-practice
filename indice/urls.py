@@ -1,5 +1,6 @@
 
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 from .views import *
 
@@ -12,5 +13,7 @@ urlpatterns = [
     path('calcular-nacimiento/<int:edad>', calcular_nacimiento, name='calcular_nacimiento'),
     path('mi-plantilla/', mi_plantilla, name='mi_plantilla'),
     path('login/', login, name='login'),
+    path('registrar/', registrar, name='registrar'),
     path('editar/', editar, name='editar'),
+    path('logout/', LogoutView.as_view(template_name='indice/logout.html'), name='logout'),
 ]
